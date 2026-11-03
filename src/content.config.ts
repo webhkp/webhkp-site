@@ -14,7 +14,7 @@ const projects = defineCollection({
 		category: z.enum(['Product', 'Client work', 'Open source', 'Education']),
 		tags: z.array(z.string()).default([]),
 		stack: z.array(z.string()).default([]),
-		accent: z.string().default('#c8ff3d'),
+		accent: z.string().default('var(--accent)'),
 		pattern: z.enum(['grid', 'rings', 'bars', 'dots']).default('grid'),
 		url: z.string().optional(),
 		repo: z.string().optional(),

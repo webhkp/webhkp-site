@@ -35,6 +35,7 @@ const spans = ['wide', '', '', '', '', 'full'];
 <BaseLayout>
 	<!-- ================= HERO ================= -->
 	<section class="hero">
+		<div class="hero-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
 		<canvas class="hero-canvas" data-hero-grid aria-hidden="true"></canvas>
 		<div class="hero-fade" aria-hidden="true"></div>
 
@@ -245,6 +246,56 @@ const spans = ['wide', '', '', '', '', 'full'];
 		overflow: hidden;
 		isolation: isolate;
 	}
+	.hero-aurora {
+		position: absolute;
+		inset: 0;
+		z-index: -3;
+		overflow: hidden;
+		pointer-events: none;
+		opacity: var(--aura);
+	}
+	.hero-aurora span {
+		position: absolute;
+		border-radius: 50%;
+		filter: blur(70px);
+	}
+	.hero-aurora span:nth-child(1) {
+		width: min(52vw, 720px);
+		aspect-ratio: 1;
+		right: -8%;
+		top: -22%;
+		background: radial-gradient(circle, color-mix(in srgb, var(--accent) 70%, transparent), transparent 65%);
+		opacity: 0.6;
+		animation: aurora-a 18s ease-in-out infinite alternate;
+	}
+	.hero-aurora span:nth-child(2) {
+		width: min(38vw, 520px);
+		aspect-ratio: 1;
+		right: 22%;
+		top: 30%;
+		background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 60%, transparent), transparent 65%);
+		opacity: 0.35;
+		animation: aurora-b 22s ease-in-out infinite alternate;
+	}
+	.hero-aurora span:nth-child(3) {
+		width: min(40vw, 560px);
+		aspect-ratio: 1;
+		left: -14%;
+		bottom: -10%;
+		background: radial-gradient(circle, color-mix(in srgb, var(--accent) 50%, transparent), transparent 65%);
+		opacity: 0.3;
+		animation: aurora-a 26s ease-in-out infinite alternate-reverse;
+	}
+	@keyframes aurora-a {
+		to {
+			transform: translate(-12%, 14%) scale(1.15);
+		}
+	}
+	@keyframes aurora-b {
+		to {
+			transform: translate(18%, -10%) scale(0.9);
+		}
+	}
 	.hero-canvas {
 		position: absolute;
 		inset: 0;
@@ -286,6 +337,11 @@ const spans = ['wide', '', '', '', '', 'full'];
 	}
 	.rotator-word {
 		grid-area: 1 / 1;
+		padding-right: 0.04em;
+		background: linear-gradient(95deg, var(--accent-text) 15%, var(--accent-2));
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
 		opacity: 0;
 		translate: 0 0.5em;
 		filter: blur(8px);

@@ -14,7 +14,7 @@ export function initHeroGrid(canvas: HTMLCanvasElement) {
 	let h = 0;
 	let dpr = 1;
 	let base = '238,240,244';
-	let accent = '200,255,61';
+	let accent = '110,150,255';
 	let pointer = { x: -9999, y: -9999 };
 	let smooth = { x: -9999, y: -9999 };
 	let visible = true;
@@ -87,10 +87,6 @@ export function initHeroGrid(canvas: HTMLCanvasElement) {
 	document.documentElement.addEventListener('pointerleave', () => (pointer = { x: -9999, y: -9999 }));
 
 	new ResizeObserver(resize).observe(canvas);
-	new MutationObserver(() => {
-		readColors();
-		if (reduce) draw(0);
-	}).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
 	new IntersectionObserver(([entry]) => {
 		visible = entry.isIntersecting;

@@ -8,7 +8,7 @@ role: Consulting architect
 category: Client work
 tags: [Fintech, Event sourcing, High throughput]
 stack: [Java, Spring Boot, Kafka, PostgreSQL, AWS, Kubernetes]
-accent: '#2ee6c5'
+accent: '#3fa7a0'
 pattern: bars
 order: 4
 metrics:

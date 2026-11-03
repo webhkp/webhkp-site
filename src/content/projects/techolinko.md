@@ -8,7 +8,7 @@ role: Creator · Full-stack engineer
 category: Product
 tags: [Community, Search, Web app]
 stack: [Laravel, PHP, MySQL, Meilisearch, Redis, Docker]
-accent: '#7c5cff'
+accent: '#7c83db'
 pattern: dots
 url: '#'
 featured: true

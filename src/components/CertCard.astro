@@ -96,9 +96,6 @@ const Tag = hasUrl ? 'a' : 'article';
 		color: var(--c);
 		box-shadow: 0 0 30px -6px color-mix(in srgb, var(--c) 60%, transparent);
 	}
-	:global([data-theme='light']) .seal-core {
-		color: color-mix(in srgb, var(--c) 55%, black);
-	}
 	@keyframes spin {
 		to {
 			transform: rotate(360deg);
@@ -113,9 +110,6 @@ const Tag = hasUrl ? 'a' : 'article';
 		font-size: 0.75rem;
 		color: var(--c);
 		letter-spacing: 0.08em;
-	}
-	:global([data-theme='light']) .code {
-		color: color-mix(in srgb, var(--c) 55%, black);
 	}
 	h3 {
 		font-size: 1.2rem;

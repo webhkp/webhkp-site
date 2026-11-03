@@ -37,7 +37,7 @@ Search the code for `TODO` and `DEMO` to find placeholders to replace before lau
 
 - Pointer-reactive canvas grid in the home hero (pauses off-screen)
 - Command palette: `Ctrl/⌘ + K` or `/`
-- Light/dark theme toggle (remembers the choice, follows the OS by default)
+- Single dark navy & blue theme; all colors are design tokens at the top of `src/styles/global.css`
 - Scroll reveals, animated counters, rotating hero words, spotlight-hover cards
 - Cross-page view transitions (Chromium/Safari, progressive enhancement)
 - All motion respects `prefers-reduced-motion`

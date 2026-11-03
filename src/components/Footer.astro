@@ -94,14 +94,6 @@ const year = new Date().getFullYear();
 			</div>
 		</div>
 
-		<div class="wordmark" aria-hidden="true">
-			{
-				'WEBHKP'.split('').map((ch, i) => (
-					<span style={`--i:${i}`}>{ch}</span>
-				))
-			}
-		</div>
-
 		<div class="bottom">
 			<p>© {year} {SITE.name}. All rights reserved.</p>
 			<p class="bottom-links">
@@ -246,37 +238,13 @@ const year = new Date().getFullYear();
 		transform: translateX(3px);
 	}
 
-	.wordmark {
-		display: flex;
-		justify-content: space-between;
-		margin-top: clamp(56px, 8vw, 96px);
-		font-family: var(--ff-display);
-		font-weight: 700;
-		font-size: clamp(4.5rem, 21vw, 18rem);
-		line-height: 0.78;
-		letter-spacing: -0.06em;
-		color: transparent;
-		-webkit-text-stroke: 1px var(--border-strong);
-		user-select: none;
-	}
-	.wordmark span {
-		transition: color 0.4s var(--ease), transform 0.5s var(--ease-spring), -webkit-text-stroke-color 0.4s;
-	}
-	.wordmark:hover span {
-		-webkit-text-stroke-color: var(--accent-text);
-	}
-	.wordmark span:hover {
-		color: var(--accent);
-		transform: translateY(-12px);
-	}
-
 	.bottom {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 		gap: 12px 24px;
 		padding: 28px 0 36px;
-		margin-top: 28px;
+		margin-top: clamp(48px, 6vw, 72px);
 		border-top: 1px solid var(--border);
 		color: var(--faint);
 		font-size: 0.875rem;

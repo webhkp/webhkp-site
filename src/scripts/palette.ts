@@ -1,11 +1,11 @@
-import { copyText, toggleTheme } from './theme';
+import { copyText } from './utils';
 
 type Item = {
 	label: string;
 	group: string;
 	href?: string;
 	external?: boolean;
-	action?: 'theme' | 'copy-email';
+	action?: 'copy-email';
 	keywords?: string;
 	hint?: string;
 };
@@ -95,7 +95,6 @@ export function initPalette() {
 
 	async function run(item: Item) {
 		close();
-		if (item.action === 'theme') return toggleTheme();
 		if (item.action === 'copy-email') {
 			await copyText(email);
 			return;

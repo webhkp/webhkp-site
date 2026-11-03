@@ -8,7 +8,7 @@ role: Author · Maintainer
 category: Open source
 tags: [Observability, Helm, Open source]
 stack: [Prometheus, Grafana, Loki, Tempo, OpenTelemetry, Helm]
-accent: '#ffd23f'
+accent: '#d4a24c'
 pattern: dots
 repo: '#'
 order: 6

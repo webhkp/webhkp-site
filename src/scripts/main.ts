@@ -1,11 +1,8 @@
 import { initHeroGrid } from './hero-grid';
 import { initPalette } from './palette';
-import { copyText, toggleTheme } from './theme';
+import { copyText } from './utils';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ---------- Theme ---------- */
-document.querySelectorAll('[data-theme-toggle]').forEach((btn) => btn.addEventListener('click', toggleTheme));
 
 /* ---------- Platform-aware shortcut label ---------- */
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);

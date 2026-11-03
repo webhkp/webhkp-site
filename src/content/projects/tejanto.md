@@ -8,7 +8,7 @@ role: Founder · Architect · Lead engineer
 category: Product
 tags: [SaaS, Multi-tenant, Platform]
 stack: [TypeScript, Node.js, PostgreSQL, Redis, AWS, Kubernetes, Terraform]
-accent: '#ff7a45'
+accent: '#e07a5f'
 pattern: rings
 url: '#'
 featured: true

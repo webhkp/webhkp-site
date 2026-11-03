@@ -24,7 +24,6 @@ const items = [
 		keywords: `blog ${b.domain} ${b.topics.join(' ')}`,
 	})),
 	...SOCIALS.map((s) => ({ label: s.label, group: 'Social', href: s.href, external: true })),
-	{ label: 'Toggle light / dark theme', group: 'Actions', action: 'theme', hint: 'T', keywords: 'dark light mode' },
 	{ label: 'Copy email address', group: 'Actions', action: 'copy-email', hint: '⧉', keywords: 'contact mail' },
 ];
 ---
@@ -54,7 +53,7 @@ const items = [
 			<span><span class="kbd">/</span> anywhere to search</span>
 		</div>
 	</div>
-	<script type="application/json" id="cmdk-data" set:html={JSON.stringify(items)} />
+	<script is:inline type="application/json" id="cmdk-data" set:html={JSON.stringify(items)} />
 </dialog>
 
 <style>

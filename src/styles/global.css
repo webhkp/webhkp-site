@@ -1,5 +1,7 @@
 /* ==========================================================================
-   WEBHKP — design tokens
+   WEBHKP — design tokens (navy & blue, dark only)
+   --accent is the fill colour (buttons, marks), --accent-text is the readable
+   accent for text on --bg, --accent-ink is text placed on top of --accent.
    ========================================================================== */
 
 :root {
@@ -17,50 +19,28 @@
 	--ff-mono: var(--font-mono), ui-monospace, monospace;
 
 	color-scheme: dark;
-	--bg: #08090c;
-	--bg-2: #0d0f14;
-	--surface: #12141b;
-	--surface-2: #191c25;
-	--surface-3: #222632;
-	--border: rgba(255, 255, 255, 0.08);
-	--border-strong: rgba(255, 255, 255, 0.16);
-	--text: #eef0f4;
-	--muted: #9ba2b3;
-	--faint: #646b7d;
-	--accent: #c8ff3d;
-	--accent-text: #c8ff3d;
-	--accent-ink: #0b0d02;
-	--accent-soft: rgba(200, 255, 61, 0.12);
-	--violet: #8b6dff;
-	--glow: rgba(200, 255, 61, 0.18);
-	--shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 60px -20px rgba(0, 0, 0, 0.6);
-	--grid-line: rgba(255, 255, 255, 0.045);
-	--grid-base: 238, 240, 244;
-	--grid-accent: 200, 255, 61;
-}
+	--shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.75);
+	--aura: 1;
 
-:root[data-theme='light'] {
-	color-scheme: light;
-	--bg: #f5f4ef;
-	--bg-2: #eceae3;
-	--surface: #ffffff;
-	--surface-2: #f2f1ec;
-	--surface-3: #e7e5de;
-	--border: rgba(12, 14, 20, 0.09);
-	--border-strong: rgba(12, 14, 20, 0.18);
-	--text: #0c0e14;
-	--muted: #535a6a;
-	--faint: #8a909d;
-	--accent: #c8ff3d;
-	--accent-text: #4a6b00;
-	--accent-ink: #0b0d02;
-	--accent-soft: rgba(110, 160, 0, 0.12);
-	--violet: #5b3fd9;
-	--glow: rgba(140, 200, 0, 0.22);
-	--shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 20px 50px -24px rgba(20, 24, 40, 0.25);
-	--grid-line: rgba(12, 14, 20, 0.06);
-	--grid-base: 12, 14, 20;
-	--grid-accent: 98, 150, 0;
+	--bg: #0a0e17;
+	--bg-2: #0c1220;
+	--surface: #111827;
+	--surface-2: #172033;
+	--surface-3: #1e2a42;
+	--border: rgba(148, 170, 220, 0.1);
+	--border-strong: rgba(148, 170, 220, 0.2);
+	--text: #e8edf7;
+	--muted: #9aa6bd;
+	--faint: #64718a;
+	--accent: #3b6cf6;
+	--accent-text: #82a5ff;
+	--accent-ink: #ffffff;
+	--accent-soft: rgba(91, 140, 255, 0.12);
+	--accent-2: #38bdf8;
+	--glow: rgba(70, 120, 255, 0.28);
+	--grid-line: rgba(148, 170, 220, 0.05);
+	--grid-base: 220, 228, 245;
+	--grid-accent: 110, 150, 255;
 }
 
 /* ==========================================================================
@@ -91,6 +71,20 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: clip;
 	transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+/* ambient aurora: soft palette-coloured light behind everything */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	opacity: var(--aura);
+	background:
+		radial-gradient(55% 45% at 88% -8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+		radial-gradient(45% 40% at -8% 28%, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 70%),
+		radial-gradient(60% 45% at 50% 115%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
 }
 
 /* film grain */
@@ -265,12 +259,12 @@ ul {
 	width: 8px;
 	height: 8px;
 	border-radius: 2px;
-	background: var(--accent);
+	background: linear-gradient(135deg, var(--accent), var(--accent-2));
 	box-shadow: 0 0 12px var(--glow);
 }
 
 .text-gradient {
-	background: linear-gradient(100deg, var(--text) 10%, var(--accent-text) 55%, var(--violet) 95%);
+	background: linear-gradient(100deg, var(--text) 10%, var(--accent-text) 55%, var(--accent-2) 95%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
@@ -279,7 +273,12 @@ ul {
 .serif-em {
 	font-style: italic;
 	font-weight: 400;
+	padding-right: 0.06em;
 	color: var(--accent-text);
+	background: linear-gradient(95deg, var(--accent-text) 20%, var(--accent-2));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 /* ==========================================================================
@@ -318,9 +317,11 @@ ul {
 }
 
 .btn-primary {
-	--btn-bg: var(--accent);
+	--btn-bg: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 72%, var(--accent-2)));
 	color: var(--accent-ink);
-	box-shadow: 0 0 0 0 var(--glow);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.22),
+		0 8px 24px -10px var(--glow);
 }
 .btn-primary:hover {
 	box-shadow: 0 10px 40px -8px var(--glow), 0 0 0 6px var(--accent-soft);
@@ -492,7 +493,9 @@ ul {
 
 .card {
 	position: relative;
-	background: var(--surface);
+	background:
+		linear-gradient(180deg, color-mix(in srgb, var(--text) 4%, transparent), transparent 45%),
+		color-mix(in srgb, var(--surface) 86%, transparent);
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	box-shadow: var(--shadow);

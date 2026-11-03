@@ -8,7 +8,7 @@ role: Platform engineering lead (consulting)
 category: Client work
 tags: [Platform engineering, GitOps, Kubernetes]
 stack: [Kubernetes, Argo CD, Terraform, Backstage, Go, AWS]
-accent: '#4d9bff'
+accent: '#5b8def'
 pattern: rings
 order: 5
 metrics:

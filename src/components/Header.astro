@@ -31,10 +31,6 @@ const mobileNav = [{ label: 'Home', href: '/' }, ...NAV, { label: 'Contact', hre
 				<Icon name="search" size={16} />
 				<span class="kbd" data-mod-key>⌘K</span>
 			</button>
-			<button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="Toggle light and dark theme">
-				<Icon name="sun" size={18} class="i-sun" />
-				<Icon name="moon" size={18} class="i-moon" />
-			</button>
 			<a class="btn btn-primary btn-sm cta" href="/contact">Let’s talk <Icon name="arrow-right" size={16} /></a>
 			<button
 				class="icon-btn menu-btn"
@@ -144,19 +140,6 @@ const mobileNav = [{ label: 'Home', href: '/' }, ...NAV, { label: 'Contact', hre
 	.cmdk-btn {
 		grid-auto-flow: column;
 		padding: 0 8px 0 12px;
-	}
-	.theme-btn {
-		position: relative;
-		width: 40px;
-	}
-	.theme-btn :global(svg) {
-		grid-area: 1 / 1;
-		transition: transform 0.5s var(--ease-spring), opacity 0.3s;
-	}
-	:global([data-theme='dark']) .theme-btn :global(.i-sun),
-	:global([data-theme='light']) .theme-btn :global(.i-moon) {
-		opacity: 0;
-		transform: rotate(-90deg) scale(0.5);
 	}
 
 	.menu-btn {

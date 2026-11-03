@@ -8,7 +8,7 @@ role: Creator · Engineer
 category: Education
 tags: [Education, Visualization, Open source]
 stack: [TypeScript, Astro, WebAssembly, Python (Pyodide), Cloudflare]
-accent: '#c8ff3d'
+accent: 'var(--accent)'
 pattern: grid
 url: 'https://bigboxcode.com'
 featured: true

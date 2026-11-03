@@ -78,9 +78,6 @@ const { blog, index = 0, compact = false } = Astro.props;
 		color: var(--c);
 		border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
 	}
-	:global([data-theme='light']) .badge {
-		color: color-mix(in srgb, var(--c) 55%, black);
-	}
 	.domain {
 		font-size: 0.78rem;
 		color: var(--faint);
@@ -119,9 +116,6 @@ const { blog, index = 0, compact = false } = Astro.props;
 		letter-spacing: -0.05em;
 		line-height: 1;
 		color: var(--c);
-	}
-	:global([data-theme='light']) .stat-value {
-		color: color-mix(in srgb, var(--c) 50%, black);
 	}
 	.chip-list {
 		margin-top: auto;
