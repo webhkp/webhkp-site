@@ -10,7 +10,7 @@ tags: [Platform engineering, GitOps, Kubernetes]
 stack: [Kubernetes, Argo CD, Terraform, Backstage, Go, AWS]
 accent: '#5b8def'
 pattern: rings
-order: 5
+order: 6
 metrics:
   - { value: '15 min', label: 'new service to prod' }
   - { value: '10×', label: 'deploy frequency' }

@@ -10,7 +10,7 @@ tags: [Fintech, Event sourcing, High throughput]
 stack: [Java, Spring Boot, Kafka, PostgreSQL, AWS, Kubernetes]
 accent: '#3fa7a0'
 pattern: bars
-order: 4
+order: 5
 metrics:
   - { value: '3M+', label: 'transactions / day' }
   - { value: '0', label: 'reconciliation gaps' }

@@ -38,8 +38,8 @@ export const NAV = [
 	{ label: 'About', href: '/about' },
 	{ label: 'Services', href: '/services' },
 	{ label: 'Projects', href: '/projects' },
-	{ label: 'Blogs', href: '/blogs' },
 	{ label: 'Certifications', href: '/certifications' },
+	{ label: 'Blogs', href: '/blogs' },
 ];
 
 /** Words cycled in the home hero: "I build ___ that scale." */

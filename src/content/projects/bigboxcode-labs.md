@@ -11,8 +11,8 @@ stack: [TypeScript, Astro, WebAssembly, Python (Pyodide), Cloudflare]
 accent: 'var(--accent)'
 pattern: grid
 url: 'https://bigboxcode.com'
-featured: true
-order: 3
+featured: false
+order: 4
 metrics:
   - { value: '238+', label: 'tutorials to pair with' }
   - { value: '0', label: 'install steps' }

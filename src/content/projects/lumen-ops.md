@@ -11,7 +11,7 @@ stack: [Prometheus, Grafana, Loki, Tempo, OpenTelemetry, Helm]
 accent: '#d4a24c'
 pattern: dots
 repo: '#'
-order: 6
+order: 7
 metrics:
   - { value: '1', label: 'helm install' }
   - { value: '40+', label: 'ready dashboards' }
