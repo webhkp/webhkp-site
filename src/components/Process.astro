@@ -1,0 +1,82 @@
+---
+import { PROCESS } from '../data/services';
+---
+
+<ol class="process">
+	{
+		PROCESS.map((step, i) => (
+			<li class="step" data-reveal style={`--d:${i}`}>
+				<span class="num mono">{String(i + 1).padStart(2, '0')}</span>
+				<span class="node" aria-hidden="true" />
+				<h3>{step.title}</h3>
+				<p class="muted">{step.text}</p>
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.process {
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 24px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.process::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 58px;
+		height: 1px;
+		background: linear-gradient(90deg, var(--accent), var(--border-strong) 40%, transparent);
+	}
+	.step {
+		position: relative;
+		display: grid;
+		gap: 12px;
+		align-content: start;
+	}
+	.num {
+		font-size: 0.8rem;
+		color: var(--faint);
+		height: 40px;
+	}
+	.node {
+		width: 14px;
+		height: 14px;
+		margin: 0 0 14px;
+		border-radius: 4px;
+		background: var(--bg);
+		border: 2px solid var(--accent-text);
+		transform: rotate(45deg);
+		transition: background-color 0.3s, box-shadow 0.3s;
+	}
+	.step:hover .node {
+		background: var(--accent);
+		box-shadow: 0 0 20px var(--glow);
+	}
+	h3 {
+		font-size: 1.4rem;
+	}
+	p {
+		font-size: 0.95rem;
+	}
+	@media (max-width: 860px) {
+		.process {
+			grid-template-columns: 1fr 1fr;
+			row-gap: 40px;
+		}
+		.process::before {
+			display: none;
+		}
+	}
+	@media (max-width: 520px) {
+		.process {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

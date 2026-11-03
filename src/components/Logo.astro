@@ -1,0 +1,59 @@
+---
+interface Props {
+	size?: 'sm' | 'md';
+}
+const { size = 'md' } = Astro.props;
+---
+
+<span class:list={['logo', size]}>
+	<span class="mark" aria-hidden="true">
+		<span class="box b1"></span>
+		<span class="box b2"></span>
+	</span>
+	<span class="word">WEB<span class="hkp">HKP</span></span>
+</span>
+
+<style>
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--ff-display);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		font-size: 1.15rem;
+		line-height: 1;
+	}
+	.logo.sm {
+		font-size: 1rem;
+	}
+	.hkp {
+		color: var(--accent-text);
+	}
+	.mark {
+		position: relative;
+		width: 26px;
+		height: 26px;
+		flex: none;
+	}
+	.box {
+		position: absolute;
+		border-radius: 6px;
+		transition: transform 0.5s var(--ease-spring);
+	}
+	.b1 {
+		inset: 0 6px 6px 0;
+		border: 2px solid var(--text);
+	}
+	.b2 {
+		inset: 8px 0 0 8px;
+		background: var(--accent);
+		box-shadow: 0 0 16px var(--glow);
+	}
+	:global(a:hover) > .logo .b1 {
+		transform: translate(-2px, -2px);
+	}
+	:global(a:hover) > .logo .b2 {
+		transform: translate(2px, 2px) rotate(8deg);
+	}
+</style>

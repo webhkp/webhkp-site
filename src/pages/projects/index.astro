@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const categories = [...new Set(projects.map((p) => p.data.category))];
+const countFor = (c: string) => projects.filter((p) => p.data.category === c).length;
+---
+
+<BaseLayout title="Projects" description="Products, client work, open source and education projects built by WEBHKP.">
+	<PageHero
+		eyebrow="Projects"
+		title="Things I’ve <span class='serif-em'>designed, built</span> & shipped."
+		lede="A mix of my own products, client engagements, open-source tools and learning platforms."
+	/>
+
+	<section class="section-tight" data-filter-root>
+		<div class="container">
+			<div class="toolbar">
+				<div class="filter-bar" role="group" aria-label="Filter projects by category">
+					<button class="filter-btn" type="button" data-filter="all" aria-pressed="true">
+						All<span class="count">{projects.length}</span>
+					</button>
+					{
+						categories.map((c) => (
+							<button class="filter-btn" type="button" data-filter={c} aria-pressed="false">
+								{c}
+								<span class="count">{countFor(c)}</span>
+							</button>
+						))
+					}
+				</div>
+				<p class="mono muted showing" aria-live="polite">
+					Showing <span data-filter-count>{projects.length}</span> of {projects.length}
+				</p>
+			</div>
+
+			<div class="grid">
+				{projects.map((p, i) => <ProjectCard project={p} index={i % 2} />)}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0 24px;
+	}
+	.showing {
+		font-size: 0.8rem;
+		margin-bottom: 32px;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 16px;
+	}
+	@media (max-width: 720px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

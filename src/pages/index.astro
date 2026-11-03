@@ -1,0 +1,708 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import CertCard from '../components/CertCard.astro';
+import Marquee from '../components/Marquee.astro';
+import Process from '../components/Process.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { HERO_ROTATOR, SITE, STATS } from '../data/site';
+import { SERVICES } from '../data/services';
+import { BLOGS } from '../data/blogs';
+import { CERTIFICATIONS } from '../data/certifications';
+import { STACK } from '../data/about';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const featured = projects.filter((p) => p.data.featured).slice(0, 3);
+
+const stats = [
+	{ value: STATS.yearsExperience, suffix: '+', label: 'Years shipping production software' },
+	{ value: STATS.clientsServed, suffix: '+', label: 'Teams and clients supported' },
+	{ value: STATS.tutorialsPublished, suffix: '+', label: 'Tutorials published on BigBoxCode' },
+	{ value: CERTIFICATIONS.length, suffix: '', label: 'Professional certifications' },
+];
+
+const allTech = STACK.flatMap((g) => g.items.map((i) => i.name));
+const half = Math.ceil(allTech.length / 2);
+const flagship = BLOGS.find((b) => b.flagship)!;
+const network = BLOGS.filter((b) => !b.flagship);
+const spans = ['wide', '', '', '', '', 'full'];
+---
+
+<BaseLayout>
+	<!-- ================= HERO ================= -->
+	<section class="hero">
+		<canvas class="hero-canvas" data-hero-grid aria-hidden="true"></canvas>
+		<div class="hero-fade" aria-hidden="true"></div>
+
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<a href="/contact" class="status-pill" data-reveal>
+					<span class="pulse"></span>
+					{SITE.availability.label}
+					<span class="muted">· {SITE.availability.note}</span>
+				</a>
+
+				<h1 class="display-xl hero-title" data-reveal style="--d:1">
+					I build{' '}
+					<span class="rotator" data-rotator>
+						{
+							HERO_ROTATOR.map((w, i) => (
+								<span class:list={['rotator-word', i === 0 && 'is-active']} aria-hidden={i === 0 ? undefined : 'true'}>
+									{w}
+								</span>
+							))
+						}
+					</span>{' '}
+					that <span class="serif-em">scale.</span>
+				</h1>
+
+				<p class="lede" data-reveal style="--d:2">
+					Independent software consultant helping teams design cloud-native architecture, ship Kubernetes platforms
+					and build backends that stay fast under load. Also the creator of{' '}
+					<a class="inline-link" href="https://bigboxcode.com" target="_blank" rel="noopener">BigBoxCode</a>.
+				</p>
+
+				<div class="hero-actions" data-reveal style="--d:3">
+					<a class="btn btn-primary" href="/contact">Start a project <Icon name="arrow-right" size={18} /></a>
+					<a class="btn btn-ghost" href="/projects">See my work</a>
+				</div>
+
+				<ul class="hero-meta mono" data-reveal style="--d:4">
+					<li><Icon name="map-pin" size={14} /> {SITE.location}</li>
+					<li><Icon name="clock" size={14} /> {SITE.responseTime}</li>
+					<li class="hide-sm">
+						<button type="button" class="meta-btn" data-cmdk-open>
+							<span class="kbd" data-mod-key>⌘K</span> to explore
+						</button>
+					</li>
+				</ul>
+			</div>
+
+			<div class="terminal card" data-reveal="scale" style="--d:2" aria-label="About WEBHKP, terminal style">
+				<div class="term-bar">
+					<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+					<span class="mono term-title">~/webhkp — zsh</span>
+				</div>
+				<div class="term-body mono">
+					<p class="ln" style="--t:0"><span class="prompt">$</span> whoami</p>
+					<p class="ln out" style="--t:1">software consultant · engineer · educator</p>
+					<p class="ln" style="--t:2"><span class="prompt">$</span> cat stack.txt</p>
+					<p class="ln out" style="--t:3">java · go · typescript · python · php</p>
+					<p class="ln out" style="--t:4">aws · kubernetes · terraform · kafka</p>
+					<p class="ln" style="--t:5"><span class="prompt">$</span> ls ~/network</p>
+					<p class="ln out net" style="--t:6">
+						{BLOGS.map((b) => <span>{b.domain}</span>)}
+					</p>
+					<p class="ln" style="--t:7"><span class="prompt">$</span> status --now</p>
+					<p class="ln out ok" style="--t:8">● open to new engagements<span class="caret" aria-hidden="true"></span></p>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<dl class="stats">
+				{
+					stats.map((s, i) => (
+						<div class="stat" data-reveal style={`--d:${i}`}>
+							<dt class="muted">{s.label}</dt>
+							<dd data-count={s.value} data-suffix={s.suffix}>{`${s.value}${s.suffix}`}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</section>
+
+	<!-- ================= TECH MARQUEE ================= -->
+	<section class="marquee-band" aria-label="Technologies I work with">
+		<Marquee items={allTech.slice(0, half)} speed={55} />
+		<Marquee items={allTech.slice(half)} reverse speed={60} />
+	</section>
+
+	<!-- ================= SERVICES BENTO ================= -->
+	<section class="section">
+		<div class="container">
+			<SectionHeading
+				eyebrow="What I do"
+				title="Senior engineering, <span class='serif-em'>on demand.</span>"
+				lede="From a one-off architecture review to leading a platform build end to end, engagements are shaped around your team."
+				link={{ href: '/services', label: 'All services' }}
+			/>
+			<div class="bento">
+				{
+					SERVICES.map((s, i) => (
+						<a href={`/services#${s.id}`} class:list={['svc card spot', spans[i]]} data-reveal style={`--d:${i}`}>
+							<span class="svc-icon">
+								<Icon name={s.icon} size={24} />
+							</span>
+							<div class="svc-text">
+								<h3>{s.title}</h3>
+								<p class="muted">{s.summary}</p>
+							</div>
+							<div class="chip-list">
+								{s.tags.map((t) => (
+									<span class="chip">{t}</span>
+								))}
+							</div>
+							{i === 0 && (
+								<div class="svc-visual" aria-hidden="true">
+									{Array.from({ length: 24 }).map((_, n) => (
+										<span style={`--n:${n}`} />
+									))}
+								</div>
+							)}
+							<span class="svc-go" aria-hidden="true">
+								<Icon name="arrow-up-right" size={18} />
+							</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- ================= FEATURED PROJECTS ================= -->
+	<section class="section grid-section">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Selected work"
+				title="Products I’ve built and <span class='serif-em'>shipped.</span>"
+				link={{ href: '/projects', label: `All ${projects.length} projects` }}
+			/>
+			<div class="featured">
+				{featured.map((p, i) => <ProjectCard project={p} layout={i === 0 ? 'wide' : 'stack'} index={i} />)}
+			</div>
+		</div>
+	</section>
+
+	<!-- ================= BIGBOX NETWORK ================= -->
+	<section class="section">
+		<div class="container">
+			<SectionHeading
+				eyebrow="The BigBox network"
+				title={`${BLOGS.length} sites. <span class='serif-em'>One mission:</span> make hard tech approachable.`}
+				lede="I write and teach across a family of learning sites, from algorithms and design patterns to system design, AI, security and quantum computing."
+				link={{ href: '/blogs', label: 'Explore the network' }}
+			/>
+			<div class="network">
+				<div class="network-flagship">
+					<BlogCard blog={flagship} />
+				</div>
+				<div class="network-grid">
+					{network.map((b, i) => <BlogCard blog={b} index={i + 1} compact />)}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ================= CERTIFICATIONS ================= -->
+	<section class="section certs-band">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Credentials"
+				title="Certified across <span class='serif-em'>cloud, containers</span> & code."
+				link={{ href: '/certifications', label: 'All certifications' }}
+			/>
+		</div>
+		<div class="cert-scroller" tabindex="0" aria-label="Certifications, scrollable">
+			<div class="cert-track">
+				{CERTIFICATIONS.map((c, i) => <CertCard cert={c} index={i} />)}
+			</div>
+		</div>
+	</section>
+
+	<!-- ================= PROCESS ================= -->
+	<section class="section">
+		<div class="container">
+			<SectionHeading
+				eyebrow="How we’ll work"
+				title="A process built for <span class='serif-em'>clarity.</span>"
+				lede="No black boxes. You always know what’s happening, why and what comes next."
+			/>
+			<Process />
+		</div>
+	</section>
+
+	<!-- ================= TESTIMONIALS ================= -->
+	<section class="section section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Kind words" title="What clients say." />
+			<Testimonials />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	/* ---------- Hero ---------- */
+	.hero {
+		position: relative;
+		padding-top: calc(var(--header-h) + clamp(48px, 8vw, 104px));
+		padding-bottom: clamp(56px, 7vw, 88px);
+		overflow: hidden;
+		isolation: isolate;
+	}
+	.hero-canvas {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -2;
+	}
+	.hero-fade {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background:
+			radial-gradient(60% 50% at 20% 35%, color-mix(in srgb, var(--bg) 85%, transparent), transparent 70%),
+			linear-gradient(to bottom, transparent 55%, var(--bg));
+	}
+	.hero-inner {
+		display: grid;
+		grid-template-columns: 1.35fr 1fr;
+		align-items: center;
+		gap: clamp(32px, 5vw, 72px);
+	}
+	.hero-copy {
+		display: grid;
+		justify-items: start;
+		gap: 28px;
+	}
+	.hero-title {
+		font-size: clamp(2.4rem, 5.2vw, 4.6rem);
+	}
+	.hero-title .rotator {
+		display: inline-grid;
+		white-space: nowrap;
+	}
+	.rotator {
+		display: inline-grid;
+		vertical-align: top;
+		color: var(--accent-text);
+	}
+	.rotator-word {
+		grid-area: 1 / 1;
+		opacity: 0;
+		translate: 0 0.5em;
+		filter: blur(8px);
+		transition:
+			opacity 0.6s var(--ease),
+			translate 0.6s var(--ease),
+			filter 0.6s var(--ease);
+	}
+	.rotator-word.is-active {
+		opacity: 1;
+		translate: none;
+		filter: none;
+	}
+	.rotator-word.is-leaving {
+		opacity: 0;
+		translate: 0 -0.5em;
+		filter: blur(8px);
+	}
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+	.hero-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px 24px;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+	.hero-meta li {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.meta-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+	}
+	.meta-btn:hover {
+		color: var(--text);
+	}
+
+	/* terminal */
+	.terminal {
+		border-radius: var(--radius-lg);
+		background: color-mix(in srgb, var(--surface) 82%, transparent);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--border);
+	}
+	.term-bar {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		padding: 14px 18px;
+		border-bottom: 1px solid var(--border);
+	}
+	.dots {
+		display: flex;
+		gap: 7px;
+	}
+	.dots i {
+		width: 11px;
+		height: 11px;
+		border-radius: 50%;
+		background: #ff5f57;
+	}
+	.dots i:nth-child(2) {
+		background: #febc2e;
+	}
+	.dots i:nth-child(3) {
+		background: #28c840;
+	}
+	.term-title {
+		font-size: 0.75rem;
+		color: var(--faint);
+	}
+	.term-body {
+		display: grid;
+		gap: 6px;
+		padding: 22px 22px 26px;
+		font-size: clamp(0.78rem, 1.1vw, 0.88rem);
+		line-height: 1.6;
+	}
+	.ln {
+		opacity: 0;
+		animation: type-in 0.4s var(--ease) forwards;
+		animation-delay: calc(0.6s + var(--t) * 0.32s);
+	}
+	.ln.out {
+		color: var(--muted);
+		padding-left: 16px;
+	}
+	.prompt {
+		color: var(--accent-text);
+		margin-right: 8px;
+	}
+	.net {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2px 14px;
+	}
+	.net span:first-child {
+		color: var(--accent-text);
+	}
+	.ok {
+		color: #3ddc84 !important;
+	}
+	.caret {
+		display: inline-block;
+		width: 8px;
+		height: 1.1em;
+		margin-left: 6px;
+		vertical-align: text-bottom;
+		background: var(--accent);
+		animation: blink 1s steps(1) infinite;
+	}
+	@keyframes type-in {
+		from {
+			opacity: 0;
+			translate: -6px 0;
+		}
+		to {
+			opacity: 1;
+			translate: none;
+		}
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+
+	/* stats */
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		margin: clamp(56px, 8vw, 96px) 0 0;
+		border-top: 1px solid var(--border);
+	}
+	.stat {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: 8px;
+		padding: 28px 24px 0 0;
+	}
+	.stat + .stat {
+		padding-left: 24px;
+		border-left: 1px solid var(--border);
+	}
+	.stat dd {
+		margin: 0;
+		font-family: var(--ff-display);
+		font-weight: 600;
+		font-size: clamp(2.4rem, 5vw, 3.75rem);
+		letter-spacing: -0.05em;
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+	}
+	.stat dt {
+		font-size: 0.9rem;
+		max-width: 22ch;
+	}
+
+	/* ---------- Marquee ---------- */
+	.marquee-band {
+		display: grid;
+		gap: 14px;
+		padding-block: 8px clamp(24px, 4vw, 48px);
+	}
+
+	/* ---------- Bento ---------- */
+	.bento {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+	}
+	.svc {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		padding: 28px;
+		min-height: 280px;
+	}
+	.svc:hover {
+		transform: translateY(-4px);
+		border-color: var(--border-strong);
+	}
+	.svc.wide {
+		grid-column: span 2;
+	}
+	.svc.full {
+		grid-column: 1 / -1;
+		min-height: 0;
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 24px 32px;
+		background:
+			linear-gradient(110deg, var(--accent-soft), transparent 55%),
+			var(--surface);
+	}
+	.svc.full .chip-list {
+		justify-content: flex-end;
+		max-width: 320px;
+	}
+	.svc-icon {
+		display: grid;
+		place-items: center;
+		width: 52px;
+		height: 52px;
+		border-radius: 16px;
+		background: var(--surface-2);
+		border: 1px solid var(--border);
+		color: var(--accent-text);
+		transition: transform 0.5s var(--ease-spring), background-color 0.3s, color 0.3s;
+	}
+	.svc:hover .svc-icon {
+		transform: rotate(-8deg) scale(1.06);
+		background: var(--accent);
+		color: var(--accent-ink);
+	}
+	.svc-text {
+		display: grid;
+		gap: 10px;
+		max-width: 46ch;
+	}
+	.svc h3 {
+		font-size: 1.45rem;
+	}
+	.svc.wide h3 {
+		font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+	}
+	.svc .chip-list {
+		margin-top: auto;
+	}
+	.svc-go {
+		position: absolute;
+		top: 24px;
+		right: 24px;
+		color: var(--faint);
+		transition: transform 0.35s var(--ease-spring), color 0.2s;
+	}
+	.svc:hover .svc-go {
+		color: var(--text);
+		transform: translate(3px, -3px);
+	}
+	.svc.full .svc-go {
+		position: static;
+	}
+	.svc-visual {
+		position: absolute;
+		right: 28px;
+		bottom: 28px;
+		display: grid;
+		grid-template-columns: repeat(6, 18px);
+		gap: 6px;
+		z-index: -1;
+		opacity: 0.8;
+	}
+	.svc-visual span {
+		width: 18px;
+		height: 18px;
+		border-radius: 5px;
+		border: 1px solid var(--border-strong);
+		animation: cell 4s var(--ease) infinite;
+		animation-delay: calc(var(--n) * 0.13s);
+	}
+	@keyframes cell {
+		0%,
+		70%,
+		100% {
+			background: transparent;
+		}
+		35% {
+			background: var(--accent);
+			border-color: transparent;
+			box-shadow: 0 0 14px var(--glow);
+		}
+	}
+
+	/* ---------- Featured ---------- */
+	.grid-section {
+		background-image:
+			linear-gradient(var(--grid-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+		background-size: 56px 56px;
+		mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+	}
+	.featured {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+	}
+	.featured > :global(.wide) {
+		grid-column: 1 / -1;
+	}
+
+	/* ---------- Network ---------- */
+	.network {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr;
+		gap: 16px;
+	}
+	.network-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+	}
+	.network-grid > :global(:last-child:nth-child(odd)) {
+		grid-column: 1 / -1;
+	}
+
+	/* ---------- Certs scroller ---------- */
+	.cert-scroller {
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		padding-bottom: 8px;
+		mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+	}
+	.cert-scroller::-webkit-scrollbar {
+		display: none;
+	}
+	.cert-track {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(260px, 300px);
+		gap: 16px;
+		padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2));
+		width: max-content;
+	}
+	.cert-track > :global(*) {
+		scroll-snap-align: center;
+	}
+
+	/* ---------- Responsive ---------- */
+	@media (max-width: 1020px) {
+		.hero-inner {
+			grid-template-columns: 1fr;
+		}
+		.hero-title {
+			max-width: 16ch;
+		}
+		.terminal {
+			max-width: 560px;
+		}
+		.network {
+			grid-template-columns: 1fr;
+		}
+	}
+	@media (max-width: 860px) {
+		.stats {
+			grid-template-columns: 1fr 1fr;
+		}
+		.stat:nth-child(3) {
+			padding-left: 0;
+			border-left: 0;
+		}
+		.stat:nth-child(n + 3) {
+			padding-top: 24px;
+			margin-top: 24px;
+			border-top: 1px solid var(--border);
+		}
+		.bento {
+			grid-template-columns: 1fr 1fr;
+		}
+		.svc.full {
+			grid-template-columns: 1fr;
+		}
+		.svc.full .chip-list {
+			justify-content: flex-start;
+		}
+		.svc.full .svc-go {
+			position: absolute;
+		}
+		.svc-visual {
+			display: none;
+		}
+	}
+	@media (max-width: 620px) {
+		.bento,
+		.featured,
+		.network-grid {
+			grid-template-columns: 1fr;
+		}
+		.svc.wide {
+			grid-column: auto;
+		}
+		.svc {
+			min-height: 0;
+		}
+		.hide-sm,
+		.status-pill .muted {
+			display: none !important;
+		}
+	}
+	@media (max-width: 420px) {
+		.stat dd {
+			font-size: 2.2rem;
+		}
+		.stat,
+		.stat + .stat {
+			padding-right: 12px;
+		}
+		.stat + .stat {
+			padding-left: 12px;
+		}
+		.stat:nth-child(3) {
+			padding-left: 0;
+		}
+	}
+</style>

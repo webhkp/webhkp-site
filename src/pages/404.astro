@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { NAV } from '../data/site';
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist.">
+	<section class="nf">
+		<div class="container inner">
+			<div class="boxes" aria-hidden="true">
+				<span class="digit">4</span>
+				<span class="cube"><span></span><span></span></span>
+				<span class="digit">4</span>
+			</div>
+			<p class="eyebrow">Error 404</p>
+			<h1 class="display-lg">This box is <span class="serif-em">empty.</span></h1>
+			<p class="lede">The page you’re looking for has moved, been renamed or never existed.</p>
+			<div class="actions">
+				<a class="btn btn-primary" href="/">Back home <Icon name="arrow-right" size={18} /></a>
+				<button class="btn btn-ghost" type="button" data-cmdk-open>
+					<Icon name="search" size={16} /> Search <span class="kbd" data-mod-key>⌘K</span>
+				</button>
+			</div>
+			<nav class="links" aria-label="Popular pages">
+				{NAV.map((n) => <a href={n.href}>{n.label}</a>)}
+			</nav>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.nf {
+		min-height: 88vh;
+		display: grid;
+		align-items: center;
+		padding-top: calc(var(--header-h) + 48px);
+		padding-bottom: 64px;
+		background-image:
+			linear-gradient(var(--grid-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+		background-size: 56px 56px;
+		mask-image: radial-gradient(ellipse at center, #000 40%, transparent 80%);
+	}
+	.inner {
+		display: grid;
+		justify-items: center;
+		text-align: center;
+		gap: 22px;
+	}
+	.boxes {
+		display: flex;
+		align-items: center;
+		gap: clamp(12px, 3vw, 28px);
+		margin-bottom: 12px;
+	}
+	.digit {
+		font-family: var(--ff-display);
+		font-weight: 700;
+		font-size: clamp(6rem, 20vw, 13rem);
+		line-height: 0.8;
+		letter-spacing: -0.06em;
+		color: transparent;
+		-webkit-text-stroke: 2px var(--text);
+	}
+	.cube {
+		position: relative;
+		width: clamp(80px, 15vw, 150px);
+		aspect-ratio: 1;
+		animation: wobble 4s var(--ease) infinite;
+	}
+	.cube span {
+		position: absolute;
+		border-radius: 22%;
+	}
+	.cube span:first-child {
+		inset: 0 18% 18% 0;
+		border: 3px solid var(--text);
+	}
+	.cube span:last-child {
+		inset: 24% 0 0 24%;
+		background: var(--accent);
+		box-shadow: 0 0 60px var(--glow);
+	}
+	@keyframes wobble {
+		0%,
+		100% {
+			transform: rotate(0);
+		}
+		25% {
+			transform: rotate(-10deg) translateY(-6px);
+		}
+		50% {
+			transform: rotate(6deg);
+		}
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 12px;
+	}
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 8px 20px;
+		margin-top: 12px;
+	}
+	.links a {
+		color: var(--muted);
+		border-bottom: 1px solid var(--border-strong);
+	}
+	.links a:hover {
+		color: var(--text);
+		border-color: var(--accent-text);
+	}
+</style>

@@ -1,0 +1,316 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { NAV, SITE, SOCIALS } from '../data/site';
+import { BLOGS } from '../data/blogs';
+
+const showCta = !Astro.url.pathname.startsWith('/contact');
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	{
+		showCta && (
+			<section class="container footer-cta" data-reveal>
+				<div class="cta-card card">
+					<div class="cta-orbs" aria-hidden="true">
+						<span />
+						<span />
+						<span />
+					</div>
+					<p class="eyebrow">Next step</p>
+					<h2 class="display-lg">
+						Have a system that needs to <span class="serif-em">scale</span>?
+					</h2>
+					<p class="lede">
+						Tell me where you are and where you need to be. You'll get an honest take on the path between,
+						usually within a day.
+					</p>
+					<div class="cta-actions">
+						<a class="btn btn-primary" href="/contact">
+							Start a project <Icon name="arrow-right" size={18} />
+						</a>
+						<button class="btn btn-ghost" type="button" data-copy={SITE.email}>
+							<Icon name="copy" size={16} />
+							<span data-copy-label>{SITE.email}</span>
+						</button>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<div class="container">
+		<div class="footer-grid">
+			<div class="col brand-col">
+				<a href="/" aria-label={`${SITE.name} home`}><Logo /></a>
+				<p class="muted small">{SITE.description}</p>
+				<a href="/contact" class="status-pill">
+					<span class="pulse"></span>
+					{SITE.availability.label}
+				</a>
+			</div>
+
+			<nav class="col" aria-label="Footer">
+				<h3 class="col-title">Explore</h3>
+				<ul>
+					<li><a href="/">Home</a></li>
+					{NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</nav>
+
+			<div class="col">
+				<h3 class="col-title">The BigBox network</h3>
+				<ul>
+					{
+						BLOGS.map((b) => (
+							<li>
+								<a href={b.url} target="_blank" rel="noopener">
+									{b.name} <Icon name="arrow-up-right" size={14} />
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="col">
+				<h3 class="col-title">Connect</h3>
+				<ul>
+					{
+						SOCIALS.map((s) => (
+							<li>
+								<a href={s.href} target="_blank" rel="noopener">
+									<Icon name={s.icon} size={16} /> {s.label}
+								</a>
+							</li>
+						))
+					}
+					<li>
+						<a href={`mailto:${SITE.email}`}><Icon name="mail" size={16} /> Email</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="wordmark" aria-hidden="true">
+			{
+				'WEBHKP'.split('').map((ch, i) => (
+					<span style={`--i:${i}`}>{ch}</span>
+				))
+			}
+		</div>
+
+		<div class="bottom">
+			<p>© {year} {SITE.name}. All rights reserved.</p>
+			<p class="bottom-links">
+				<button type="button" class="linkish" data-cmdk-open>
+					Quick nav <span class="kbd" data-mod-key>⌘K</span>
+				</button>
+				<a href="#main" class="linkish">Back to top <Icon name="arrow-up" size={14} /></a>
+			</p>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		position: relative;
+		padding-top: clamp(48px, 8vw, 96px);
+		border-top: 1px solid var(--border);
+		background: linear-gradient(to bottom, var(--bg), var(--bg-2));
+		overflow: hidden;
+	}
+
+	.footer-cta {
+		margin-bottom: clamp(64px, 9vw, 112px);
+	}
+	.cta-card {
+		display: grid;
+		justify-items: start;
+		gap: 22px;
+		padding: clamp(32px, 6vw, 72px);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(120% 140% at 100% 0%, var(--accent-soft), transparent 50%),
+			var(--surface);
+	}
+	.cta-card h2 {
+		max-width: 16ch;
+	}
+	.cta-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin-top: 8px;
+	}
+	.cta-orbs {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+	}
+	.cta-orbs span {
+		position: absolute;
+		border: 1px solid var(--border-strong);
+		border-radius: 28px;
+		animation: float 12s ease-in-out infinite alternate;
+	}
+	.cta-orbs span:nth-child(1) {
+		width: 220px;
+		height: 220px;
+		right: 6%;
+		top: 14%;
+		transform: rotate(12deg);
+	}
+	.cta-orbs span:nth-child(2) {
+		width: 120px;
+		height: 120px;
+		right: 22%;
+		bottom: 12%;
+		background: var(--accent-soft);
+		border-color: transparent;
+		animation-delay: -4s;
+	}
+	.cta-orbs span:nth-child(3) {
+		width: 64px;
+		height: 64px;
+		right: 4%;
+		bottom: 18%;
+		background: var(--accent);
+		border: 0;
+		box-shadow: 0 0 40px var(--glow);
+		animation-delay: -8s;
+	}
+	@keyframes float {
+		to {
+			transform: translateY(-18px) rotate(-6deg);
+		}
+	}
+	@media (max-width: 760px) {
+		.cta-orbs span:nth-child(1),
+		.cta-orbs span:nth-child(2) {
+			display: none;
+		}
+		.cta-orbs span:nth-child(3) {
+			top: 28px;
+			right: 28px;
+			bottom: auto;
+			width: 40px;
+			height: 40px;
+			border-radius: 12px;
+		}
+	}
+
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 1.6fr repeat(3, 1fr);
+		gap: 40px;
+	}
+	.col {
+		display: grid;
+		align-content: start;
+		gap: 16px;
+	}
+	.brand-col {
+		justify-items: start;
+		gap: 20px;
+	}
+	.small {
+		font-size: 0.92rem;
+		max-width: 38ch;
+	}
+	.col-title {
+		font-family: var(--ff-mono);
+		font-size: 0.72rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+	.col ul {
+		display: grid;
+		gap: 10px;
+	}
+	.col ul a {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--muted);
+		font-size: 0.95rem;
+		transition: color 0.2s, transform 0.25s var(--ease);
+	}
+	.col ul a:hover {
+		color: var(--text);
+		transform: translateX(3px);
+	}
+
+	.wordmark {
+		display: flex;
+		justify-content: space-between;
+		margin-top: clamp(56px, 8vw, 96px);
+		font-family: var(--ff-display);
+		font-weight: 700;
+		font-size: clamp(4.5rem, 21vw, 18rem);
+		line-height: 0.78;
+		letter-spacing: -0.06em;
+		color: transparent;
+		-webkit-text-stroke: 1px var(--border-strong);
+		user-select: none;
+	}
+	.wordmark span {
+		transition: color 0.4s var(--ease), transform 0.5s var(--ease-spring), -webkit-text-stroke-color 0.4s;
+	}
+	.wordmark:hover span {
+		-webkit-text-stroke-color: var(--accent-text);
+	}
+	.wordmark span:hover {
+		color: var(--accent);
+		transform: translateY(-12px);
+	}
+
+	.bottom {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 12px 24px;
+		padding: 28px 0 36px;
+		margin-top: 28px;
+		border-top: 1px solid var(--border);
+		color: var(--faint);
+		font-size: 0.875rem;
+	}
+	.bottom-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+	.linkish {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		background: none;
+		border: 0;
+		padding: 0;
+		color: var(--muted);
+		font-size: 0.875rem;
+	}
+	.linkish:hover {
+		color: var(--text);
+	}
+
+	@media (max-width: 900px) {
+		.footer-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+		.brand-col {
+			grid-column: 1 / -1;
+		}
+	}
+	@media (max-width: 480px) {
+		.footer-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

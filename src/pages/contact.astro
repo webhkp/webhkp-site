@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import FAQ from '../components/FAQ.astro';
+import { SITE, SOCIALS } from '../data/site';
+import { SERVICES } from '../data/services';
+
+const budgets = ['< $10k', '$10k – $25k', '$25k – $50k', '$50k+', 'Not sure yet'];
+const timelines = ['ASAP', 'Within a month', '1–3 months', 'Just exploring'];
+---
+
+<BaseLayout title="Contact" description="Start a project with WEBHKP: cloud, Kubernetes, backend engineering, advisory or training.">
+	<PageHero
+		eyebrow="Contact"
+		title="Let’s build something <span class='serif-em'>solid.</span>"
+		lede="Share a little about your team and what you’re working on. I read every message and reply personally."
+	/>
+
+	<section class="section-tight">
+		<div class="container contact">
+			<form class="form card" data-mailto-form data-to={SITE.email} data-reveal>
+				<div class="row two">
+					<label class="field">
+						<span>Name *</span>
+						<input name="name" type="text" autocomplete="name" required placeholder="Ada Lovelace" />
+					</label>
+					<label class="field">
+						<span>Email *</span>
+						<input name="email" type="email" autocomplete="email" required placeholder="ada@company.com" />
+					</label>
+				</div>
+				<label class="field">
+					<span>Company</span>
+					<input name="company" type="text" autocomplete="organization" placeholder="Analytical Engines Ltd." />
+				</label>
+
+				<fieldset class="field">
+					<legend>What can I help with?</legend>
+					<div class="checks">
+						{
+							SERVICES.map((s) => (
+								<label class="check">
+									<input type="checkbox" name="services" value={s.title} data-id={s.id} />
+									<span>
+										<Icon name={s.icon} size={16} />
+										{s.title}
+									</span>
+								</label>
+							))
+						}
+					</div>
+				</fieldset>
+
+				<div class="row two">
+					<label class="field">
+						<span>Budget</span>
+						<select name="budget">
+							<option value="">Select a range</option>
+							{budgets.map((b) => <option>{b}</option>)}
+						</select>
+					</label>
+					<label class="field">
+						<span>Timeline</span>
+						<select name="timeline">
+							<option value="">Select a timeline</option>
+							{timelines.map((t) => <option>{t}</option>)}
+						</select>
+					</label>
+				</div>
+
+				<label class="field">
+					<span>Tell me about the project *</span>
+					<textarea
+						name="message"
+						rows="6"
+						required
+						placeholder="Where are you today, where do you need to be, and what's in the way?"></textarea>
+				</label>
+
+				<div class="submit-row">
+					<button class="btn btn-primary" type="submit">Send message <Icon name="arrow-right" size={18} /></button>
+					<p class="muted small">Opens your email app with everything pre-filled.</p>
+				</div>
+				<p class="status mono" data-form-status hidden></p>
+			</form>
+
+			<aside class="info">
+				<div class="info-card card avail" data-reveal style="--d:1">
+					<span class="status-line"><span class="pulse"></span> {SITE.availability.label}</span>
+					<p class="muted">{SITE.availability.note}. Typical engagements start within 2–3 weeks.</p>
+				</div>
+
+				<button class="info-card card spot email" type="button" data-copy={SITE.email} data-reveal style="--d:2">
+					<span class="ic"><Icon name="mail" size={22} /></span>
+					<span class="txt">
+						<span class="mono muted label">Email</span>
+						<strong>{SITE.email}</strong>
+					</span>
+					<span class="copy mono" data-copy-label>Copy</span>
+				</button>
+
+				{
+					SITE.bookingUrl && (
+						<a class="info-card card spot" href={SITE.bookingUrl} target="_blank" rel="noopener" data-reveal style="--d:3">
+							<span class="ic">
+								<Icon name="calendar" size={22} />
+							</span>
+							<span class="txt">
+								<span class="mono muted label">Prefer to talk?</span>
+								<strong>Book a 30-min intro call</strong>
+							</span>
+							<Icon name="arrow-up-right" size={18} />
+						</a>
+					)
+				}
+
+				<div class="info-card card facts" data-reveal style="--d:3">
+					<div><Icon name="clock" size={18} /> {SITE.responseTime}</div>
+					<div><Icon name="map-pin" size={18} /> {SITE.location}</div>
+					<div><Icon name="shield" size={18} /> Happy to sign your NDA</div>
+				</div>
+
+				<div class="info-card card" data-reveal style="--d:4">
+					<span class="mono muted label">Elsewhere</span>
+					<div class="socials">
+						{
+							SOCIALS.map((s) => (
+								<a class="icon-btn" href={s.href} target="_blank" rel="noopener" aria-label={s.label} title={s.label}>
+									<Icon name={s.icon} size={18} />
+								</a>
+							))
+						}
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container faq-wrap">
+			<div>
+				<p class="eyebrow">Before you write</p>
+				<h2 class="display-md">Common questions</h2>
+			</div>
+			<FAQ limit={4} />
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	// Pre-select a service when arriving from /contact?service=<id>
+	const id = new URLSearchParams(window.location.search).get('service');
+	if (id) {
+		const box = document.querySelector<HTMLInputElement>(`input[name="services"][data-id="${CSS.escape(id)}"]`);
+		if (box) box.checked = true;
+	}
+</script>
+
+<style>
+	.contact {
+		display: grid;
+		grid-template-columns: 1.5fr 1fr;
+		gap: 24px;
+		align-items: start;
+	}
+	.form {
+		display: grid;
+		gap: 22px;
+		padding: clamp(24px, 4vw, 40px);
+		border-radius: var(--radius-lg);
+	}
+	.row.two {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+	}
+	.field {
+		display: grid;
+		gap: 8px;
+		min-width: 0;
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+	.field > span,
+	.field legend {
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--muted);
+		padding: 0;
+		margin-bottom: 8px;
+	}
+	.field > span {
+		margin-bottom: 0;
+	}
+	input[type='text'],
+	input[type='email'],
+	select,
+	textarea {
+		width: 100%;
+		padding: 13px 16px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-strong);
+		background: var(--surface-2);
+		color: var(--text);
+		font: inherit;
+		transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+	}
+	textarea {
+		resize: vertical;
+		min-height: 140px;
+	}
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--faint);
+	}
+	input:focus,
+	select:focus,
+	textarea:focus {
+		outline: none;
+		border-color: var(--accent-text);
+		box-shadow: 0 0 0 4px var(--accent-soft);
+		background: var(--surface);
+	}
+	.checks {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.check input {
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+	}
+	.check span {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 9px 14px;
+		border-radius: 999px;
+		border: 1px solid var(--border-strong);
+		background: var(--surface-2);
+		font-size: 0.88rem;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.2s var(--ease);
+	}
+	.check span:hover {
+		border-color: var(--text);
+	}
+	.check input:checked + span {
+		background: var(--accent);
+		color: var(--accent-ink);
+		border-color: transparent;
+	}
+	.check input:focus-visible + span {
+		outline: 2px solid var(--accent-text);
+		outline-offset: 2px;
+	}
+	.submit-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px 20px;
+	}
+	.small {
+		font-size: 0.85rem;
+	}
+	.status {
+		font-size: 0.85rem;
+		color: var(--accent-text);
+	}
+
+	.info {
+		display: grid;
+		gap: 12px;
+	}
+	.info-card {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 22px;
+		width: 100%;
+		text-align: left;
+		font: inherit;
+		color: inherit;
+	}
+	button.info-card,
+	a.info-card {
+		transition: transform 0.4s var(--ease), border-color 0.3s;
+	}
+	button.info-card:hover,
+	a.info-card:hover {
+		transform: translateY(-3px);
+		border-color: var(--border-strong);
+	}
+	.avail {
+		display: grid;
+		gap: 8px;
+		background:
+			radial-gradient(100% 120% at 100% 0%, rgba(61, 220, 132, 0.12), transparent 60%),
+			var(--surface);
+	}
+	.status-line {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--ff-display);
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
+	.ic {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		flex: none;
+		border-radius: 14px;
+		background: var(--surface-2);
+		color: var(--accent-text);
+	}
+	.txt {
+		display: grid;
+		min-width: 0;
+		margin-right: auto;
+	}
+	.txt strong {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.label {
+		font-size: 0.72rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+	.copy {
+		font-size: 0.75rem;
+		padding: 4px 10px;
+		border-radius: 999px;
+		border: 1px solid var(--border-strong);
+		color: var(--muted);
+	}
+	.facts {
+		display: grid;
+		gap: 12px;
+	}
+	.facts div {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		color: var(--muted);
+	}
+	.facts :global(svg) {
+		color: var(--accent-text);
+	}
+	.info-card:last-child {
+		display: grid;
+		gap: 12px;
+	}
+	.socials {
+		display: flex;
+		gap: 8px;
+	}
+	.socials .icon-btn {
+		width: 46px;
+		height: 46px;
+	}
+
+	.faq-wrap {
+		display: grid;
+		grid-template-columns: 1fr 1.6fr;
+		gap: 48px;
+		align-items: start;
+	}
+	.faq-wrap > div:first-child {
+		display: grid;
+		gap: 16px;
+	}
+
+	@media (max-width: 960px) {
+		.contact,
+		.faq-wrap {
+			grid-template-columns: 1fr;
+		}
+	}
+	@media (max-width: 560px) {
+		.row.two {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

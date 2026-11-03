@@ -1,0 +1,145 @@
+---
+import Icon from './Icon.astro';
+import type { Blog } from '../data/blogs';
+
+interface Props {
+	blog: Blog;
+	index?: number;
+	compact?: boolean;
+}
+const { blog, index = 0, compact = false } = Astro.props;
+---
+
+<a
+	href={blog.url}
+	target="_blank"
+	rel="noopener"
+	class:list={['blog-card card spot', blog.flagship && 'flagship', compact && 'compact']}
+	style={`--c:${blog.accent};--d:${index}`}
+	data-reveal
+	data-tilt={blog.flagship ? '' : undefined}
+>
+	<div class="top">
+		<span class="badge"><Icon name={blog.icon} size={22} /></span>
+		<span class="domain mono">{blog.domain}</span>
+		<span class="ext" aria-hidden="true"><Icon name="arrow-up-right" size={18} /></span>
+	</div>
+	<div class="text">
+		<h3>{blog.name}</h3>
+		<p class="tagline">{blog.tagline}</p>
+		{!compact && <p class="muted desc">{blog.description}</p>}
+	</div>
+	{
+		blog.stat && (
+			<div class="stat">
+				<span class="stat-value">{blog.stat.value}</span>
+				<span class="stat-label muted mono">{blog.stat.label}</span>
+			</div>
+		)
+	}
+	<div class="chip-list">
+		{blog.topics.slice(0, compact ? 3 : 7).map((t) => <span class="chip">{t}</span>)}
+	</div>
+	<span class="sr-only">(opens in a new tab)</span>
+</a>
+
+<style>
+	.blog-card {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		padding: 26px;
+		min-height: 100%;
+		transition:
+			transform 0.4s var(--ease),
+			border-color 0.3s;
+	}
+	.blog-card:hover {
+		border-color: color-mix(in srgb, var(--c) 50%, var(--border));
+	}
+	.blog-card:not([data-tilt]):hover {
+		transform: translateY(-4px);
+	}
+	.blog-card::before {
+		background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--c) 14%, transparent), transparent 60%);
+	}
+	.top {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.badge {
+		display: grid;
+		place-items: center;
+		width: 46px;
+		height: 46px;
+		border-radius: 14px;
+		background: color-mix(in srgb, var(--c) 16%, transparent);
+		color: var(--c);
+		border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+	}
+	:global([data-theme='light']) .badge {
+		color: color-mix(in srgb, var(--c) 55%, black);
+	}
+	.domain {
+		font-size: 0.78rem;
+		color: var(--faint);
+	}
+	.ext {
+		margin-left: auto;
+		color: var(--muted);
+		transition: transform 0.35s var(--ease-spring), color 0.2s;
+	}
+	.blog-card:hover .ext {
+		transform: translate(3px, -3px);
+		color: var(--text);
+	}
+	.text {
+		display: grid;
+		gap: 8px;
+	}
+	h3 {
+		font-size: 1.6rem;
+	}
+	.tagline {
+		font-weight: 500;
+	}
+	.desc {
+		font-size: 0.95rem;
+	}
+	.stat {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+	}
+	.stat-value {
+		font-family: var(--ff-display);
+		font-weight: 700;
+		font-size: clamp(3rem, 6vw, 4.5rem);
+		letter-spacing: -0.05em;
+		line-height: 1;
+		color: var(--c);
+	}
+	:global([data-theme='light']) .stat-value {
+		color: color-mix(in srgb, var(--c) 50%, black);
+	}
+	.chip-list {
+		margin-top: auto;
+	}
+	.flagship {
+		background:
+			radial-gradient(100% 80% at 100% 0%, color-mix(in srgb, var(--c) 14%, transparent), transparent 60%),
+			var(--surface);
+		transition: transform 0.2s ease-out, border-color 0.3s;
+	}
+	.flagship h3 {
+		font-size: clamp(2rem, 4vw, 2.8rem);
+	}
+	.compact {
+		padding: 22px;
+		gap: 16px;
+	}
+	.compact h3 {
+		font-size: 1.3rem;
+	}
+</style>

@@ -1,0 +1,143 @@
+---
+import Icon from './Icon.astro';
+import type { Certification } from '../data/certifications';
+
+interface Props {
+	cert: Certification;
+	index?: number;
+}
+const { cert, index = 0 } = Astro.props;
+const hasUrl = cert.url && cert.url !== '#';
+const Tag = hasUrl ? 'a' : 'article';
+---
+
+<Tag
+	class="cert card spot"
+	style={`--c:${cert.color};--d:${index % 6}`}
+	data-reveal
+	data-filter-item={cert.category}
+	{...hasUrl ? { href: cert.url, target: '_blank', rel: 'noopener' } : {}}
+>
+	<div class="seal" aria-hidden="true">
+		<svg viewBox="0 0 100 100" class="seal-ring">
+			<defs>
+				<path id={`arc-${cert.code}`} d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0" />
+			</defs>
+			<text>
+				<textPath href={`#arc-${cert.code}`}>
+					{`${cert.issuer} · ${cert.year} · ${cert.issuer} · `}
+				</textPath>
+			</text>
+		</svg>
+		<span class="seal-core"><Icon name="award" size={22} /></span>
+	</div>
+	<div class="info">
+		<span class="code mono">{cert.code}</span>
+		<h3>{cert.title}</h3>
+		<p class="issuer muted">{cert.issuer}</p>
+	</div>
+	<div class="foot mono">
+		<span><Icon name="calendar" size={14} /> {cert.year}</span>
+		<span class="verify">
+			{hasUrl ? 'Verify' : `ID ${cert.credentialId}`}
+			{hasUrl && <Icon name="arrow-up-right" size={14} />}
+		</span>
+	</div>
+</Tag>
+
+<style>
+	.cert {
+		display: grid;
+		grid-template-rows: auto 1fr auto;
+		gap: 20px;
+		padding: 24px;
+		transition:
+			transform 0.4s var(--ease),
+			border-color 0.3s;
+	}
+	.cert:hover {
+		transform: translateY(-4px);
+		border-color: color-mix(in srgb, var(--c) 50%, var(--border));
+	}
+	.cert::before {
+		background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--c) 14%, transparent), transparent 60%);
+	}
+	.seal {
+		position: relative;
+		width: 84px;
+		height: 84px;
+	}
+	.seal-ring {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		animation: spin 24s linear infinite;
+		animation-play-state: paused;
+	}
+	.cert:hover .seal-ring {
+		animation-play-state: running;
+	}
+	.seal-ring text {
+		font-family: var(--ff-mono);
+		font-size: 8.4px;
+		letter-spacing: 1.2px;
+		text-transform: uppercase;
+		fill: var(--faint);
+	}
+	.seal-core {
+		position: absolute;
+		inset: 20px;
+		display: grid;
+		place-items: center;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--c) 18%, var(--surface-2));
+		border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+		color: var(--c);
+		box-shadow: 0 0 30px -6px color-mix(in srgb, var(--c) 60%, transparent);
+	}
+	:global([data-theme='light']) .seal-core {
+		color: color-mix(in srgb, var(--c) 55%, black);
+	}
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	.info {
+		display: grid;
+		gap: 8px;
+		align-content: start;
+	}
+	.code {
+		font-size: 0.75rem;
+		color: var(--c);
+		letter-spacing: 0.08em;
+	}
+	:global([data-theme='light']) .code {
+		color: color-mix(in srgb, var(--c) 55%, black);
+	}
+	h3 {
+		font-size: 1.2rem;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+	}
+	.issuer {
+		font-size: 0.9rem;
+	}
+	.foot {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		padding-top: 16px;
+		border-top: 1px dashed var(--border-strong);
+		font-size: 0.75rem;
+		color: var(--faint);
+	}
+	.foot span {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+</style>

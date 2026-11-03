@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CertCard from '../components/CertCard.astro';
+import { CERTIFICATIONS } from '../data/certifications';
+
+const certs = [...CERTIFICATIONS].sort((a, b) => b.year - a.year);
+const categories = [...new Set(certs.map((c) => c.category))];
+const issuers = [...new Set(certs.map((c) => c.issuer))];
+const latest = Math.max(...certs.map((c) => c.year));
+const summary = [
+	{ value: certs.length, label: 'Certifications' },
+	{ value: issuers.length, label: 'Issuing bodies' },
+	{ value: categories.length, label: 'Disciplines' },
+	{ value: latest, label: 'Most recent' },
+];
+---
+
+<BaseLayout
+	title="Certifications"
+	description="Professional certifications across AWS, Kubernetes, Java, Terraform and Google Cloud."
+>
+	<PageHero
+		eyebrow="Certifications"
+		title="Verified skills, <span class='serif-em'>kept current.</span>"
+		lede="Certifications aren’t the job, but they keep me honest about the fundamentals. Here are the ones I hold across cloud, containers, languages and infrastructure as code."
+	>
+		<dl class="summary">
+			{
+				summary.map((s) => (
+					<div>
+						<dd>{s.value}</dd>
+						<dt class="muted">{s.label}</dt>
+					</div>
+				))
+			}
+		</dl>
+	</PageHero>
+
+	<section class="section-tight" data-filter-root>
+		<div class="container">
+			<div class="filter-bar" role="group" aria-label="Filter certifications by discipline">
+				<button class="filter-btn" type="button" data-filter="all" aria-pressed="true">
+					All<span class="count">{certs.length}</span>
+				</button>
+				{
+					categories.map((c) => (
+						<button class="filter-btn" type="button" data-filter={c} aria-pressed="false">
+							{c}
+							<span class="count">{certs.filter((x) => x.category === c).length}</span>
+						</button>
+					))
+				}
+			</div>
+			<p class="sr-only" aria-live="polite">Showing <span data-filter-count>{certs.length}</span> certifications</p>
+
+			<div class="grid">
+				{certs.map((c, i) => <CertCard cert={c} index={i} />)}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.summary {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px 48px;
+		margin: 16px 0 0;
+	}
+	.summary div {
+		display: flex;
+		flex-direction: column-reverse;
+	}
+	.summary dd {
+		margin: 0;
+		font-family: var(--ff-display);
+		font-weight: 600;
+		font-size: clamp(2rem, 4vw, 2.8rem);
+		letter-spacing: -0.04em;
+		line-height: 1.1;
+	}
+	.summary dt {
+		font-size: 0.85rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+		gap: 16px;
+	}
+</style>

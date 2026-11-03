@@ -1,0 +1,53 @@
+---
+interface Props {
+	items: string[];
+	reverse?: boolean;
+	speed?: number;
+}
+const { items, reverse = false, speed = 45 } = Astro.props;
+---
+
+<div class="marquee" data-reverse={reverse ? '' : undefined} style={`--speed:${speed}s`}>
+	{
+		[0, 1].map((copy) => (
+			<ul class="marquee-track" aria-hidden={copy === 1 ? 'true' : undefined}>
+				{items.map((item) => (
+					<li class="tech">
+						<span class="sq" aria-hidden="true" />
+						{item}
+					</li>
+				))}
+			</ul>
+		))
+	}
+</div>
+
+<style>
+	.tech {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding: 14px 22px;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--surface);
+		font-family: var(--ff-display);
+		font-size: 1.05rem;
+		font-weight: 500;
+		white-space: nowrap;
+		transition: border-color 0.2s, color 0.2s;
+	}
+	.tech:hover {
+		border-color: var(--accent-text);
+		color: var(--accent-text);
+	}
+	.sq {
+		width: 8px;
+		height: 8px;
+		border-radius: 2px;
+		background: var(--border-strong);
+	}
+	.tech:hover .sq {
+		background: var(--accent);
+	}
+</style>

@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+	eyebrow: string;
+	title: string;
+	lede?: string;
+	link?: { href: string; label: string };
+}
+const { eyebrow, title, lede, link } = Astro.props;
+---
+
+<div class="section-head">
+	<div class="titles" data-reveal>
+		<p class="eyebrow">{eyebrow}</p>
+		<h2 class="display-lg" set:html={title} />
+		{lede && <p class="lede">{lede}</p>}
+	</div>
+	{
+		link && (
+			<a class="link-arrow" href={link.href} data-reveal style="--d:2">
+				{link.label} <Icon name="arrow-right" size={16} />
+			</a>
+		)
+	}
+</div>

@@ -1,0 +1,141 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import ProjectCover from './ProjectCover.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	layout?: 'stack' | 'wide';
+	index?: number;
+}
+const { project, layout = 'stack', index = 0 } = Astro.props;
+const { title, tagline, accent, pattern, year, status, category, stack } = project.data;
+---
+
+<a
+	href={`/projects/${project.id}`}
+	class:list={['project-card card spot', layout]}
+	style={`--c:${accent};--d:${index}`}
+	data-reveal
+	data-filter-item={category}
+>
+	<div class="media">
+		<ProjectCover title={title} accent={accent} pattern={pattern} />
+	</div>
+	<div class="body">
+		<div class="meta mono">
+			<span class="cat">{category}</span>
+			<span class="dot" aria-hidden="true">•</span>
+			<span>{year}</span>
+			<span class:list={['status', status === 'Live' && 'live']}>{status}</span>
+		</div>
+		<h3>{title}</h3>
+		<p class="muted">{tagline}</p>
+		<div class="chip-list">
+			{stack.slice(0, layout === 'wide' ? 6 : 4).map((s) => <span class="chip">{s}</span>)}
+		</div>
+		<span class="go" aria-hidden="true"><Icon name="arrow-up-right" size={20} /></span>
+	</div>
+</a>
+
+<style>
+	.project-card {
+		display: grid;
+		gap: 0;
+		padding: 10px;
+		border-radius: var(--radius-lg);
+		transition:
+			transform 0.5s var(--ease),
+			border-color 0.3s;
+	}
+	.project-card:hover {
+		transform: translateY(-6px);
+		border-color: color-mix(in srgb, var(--c) 45%, var(--border));
+	}
+	.body {
+		position: relative;
+		display: grid;
+		gap: 12px;
+		padding: 18px 14px 12px;
+	}
+	.wide {
+		grid-template-columns: 1.25fr 1fr;
+		align-items: center;
+	}
+	.wide .body {
+		padding: 24px 28px;
+		gap: 16px;
+	}
+	.wide h3 {
+		font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+	}
+	h3 {
+		font-size: 1.5rem;
+		padding-right: 44px;
+	}
+	.meta {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		font-size: 0.72rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--faint);
+		padding-right: 52px;
+	}
+	.cat {
+		color: var(--c);
+		filter: saturate(1.2);
+	}
+	:global([data-theme='light']) .cat {
+		color: color-mix(in srgb, var(--c) 60%, black);
+	}
+	.status {
+		margin-left: auto;
+		padding: 3px 8px;
+		border-radius: 999px;
+		border: 1px solid var(--border);
+	}
+	.status.live {
+		color: #3ddc84;
+		border-color: color-mix(in srgb, #3ddc84 40%, transparent);
+	}
+	.go {
+		position: absolute;
+		top: 16px;
+		right: 12px;
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 1px solid var(--border-strong);
+		transition:
+			transform 0.4s var(--ease-spring),
+			background-color 0.3s,
+			color 0.3s;
+	}
+	.wide .go {
+		top: 24px;
+		right: 24px;
+	}
+	.project-card:hover .go {
+		background: var(--c);
+		color: #0b0d02;
+		border-color: transparent;
+		transform: rotate(45deg);
+	}
+	@media (max-width: 860px) {
+		.wide {
+			grid-template-columns: 1fr;
+		}
+		.wide .body {
+			padding: 18px 14px 12px;
+		}
+		.wide .go {
+			top: 16px;
+			right: 12px;
+		}
+	}
+</style>

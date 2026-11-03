@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import { NAV, SITE, SOCIALS } from '../data/site';
+import { BLOGS } from '../data/blogs';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+const items = [
+	{ label: 'Home', group: 'Pages', href: '/' },
+	...NAV.map((n) => ({ label: n.label, group: 'Pages', href: n.href })),
+	{ label: 'Contact', group: 'Pages', href: '/contact', keywords: 'hire email project' },
+	...projects.map((p) => ({
+		label: p.data.title,
+		group: 'Projects',
+		href: `/projects/${p.id}`,
+		keywords: `${p.data.tagline} ${p.data.tags.join(' ')} ${p.data.stack.join(' ')}`,
+	})),
+	...BLOGS.map((b) => ({
+		label: b.name,
+		group: 'BigBox network',
+		href: b.url,
+		external: true,
+		keywords: `blog ${b.domain} ${b.topics.join(' ')}`,
+	})),
+	...SOCIALS.map((s) => ({ label: s.label, group: 'Social', href: s.href, external: true })),
+	{ label: 'Toggle light / dark theme', group: 'Actions', action: 'theme', hint: 'T', keywords: 'dark light mode' },
+	{ label: 'Copy email address', group: 'Actions', action: 'copy-email', hint: '⧉', keywords: 'contact mail' },
+];
+---
+
+<dialog id="cmdk" class="cmdk" aria-label="Quick navigation" data-email={SITE.email}>
+	<div class="cmdk-panel">
+		<div class="cmdk-search">
+			<Icon name="search" size={18} />
+			<input
+				type="text"
+				placeholder="Search pages, projects, blogs…"
+				aria-label="Search"
+				role="combobox"
+				aria-expanded="true"
+				aria-controls="cmdk-list"
+				autocomplete="off"
+				spellcheck="false"
+				data-cmdk-input
+			/>
+			<span class="kbd">Esc</span>
+		</div>
+		<ul id="cmdk-list" class="cmdk-list" role="listbox" data-cmdk-list></ul>
+		<p class="cmdk-empty" data-cmdk-empty hidden>No results. Try “kubernetes” or “BigBox”.</p>
+		<div class="cmdk-foot">
+			<span><span class="kbd">↑</span><span class="kbd">↓</span> navigate</span>
+			<span><span class="kbd">↵</span> open</span>
+			<span><span class="kbd">/</span> anywhere to search</span>
+		</div>
+	</div>
+	<script type="application/json" id="cmdk-data" set:html={JSON.stringify(items)} />
+</dialog>
+
+<style>
+	.cmdk {
+		width: min(640px, calc(100% - 32px));
+		max-height: min(560px, calc(100vh - 120px));
+		margin: 12vh auto auto;
+		padding: 0;
+		border: 1px solid var(--border-strong);
+		border-radius: 20px;
+		background: color-mix(in srgb, var(--surface) 92%, transparent);
+		backdrop-filter: blur(24px);
+		color: var(--text);
+		box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.6);
+		overflow: hidden;
+	}
+	.cmdk[open] {
+		animation: cmdk-in 0.28s var(--ease-spring);
+	}
+	.cmdk::backdrop {
+		background: rgba(4, 5, 8, 0.55);
+		backdrop-filter: blur(4px);
+	}
+	@keyframes cmdk-in {
+		from {
+			opacity: 0;
+			transform: translateY(-10px) scale(0.97);
+		}
+	}
+	.cmdk-panel {
+		display: flex;
+		flex-direction: column;
+		max-height: inherit;
+	}
+	.cmdk-search {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 18px;
+		border-bottom: 1px solid var(--border);
+		color: var(--muted);
+	}
+	.cmdk-search input {
+		flex: 1;
+		min-width: 0;
+		border: 0;
+		outline: 0;
+		background: transparent;
+		color: var(--text);
+		font: inherit;
+		font-size: 1.05rem;
+	}
+	.cmdk-list {
+		overflow-y: auto;
+		padding: 8px;
+	}
+	.cmdk-list :global(.cmdk-group) {
+		padding: 12px 12px 6px;
+		font-family: var(--ff-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+	.cmdk-list :global(.cmdk-item) {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 11px 12px;
+		border-radius: 10px;
+		cursor: pointer;
+		color: var(--muted);
+	}
+	.cmdk-list :global(.cmdk-item[aria-selected='true']) {
+		background: var(--surface-3);
+		color: var(--text);
+		box-shadow: inset 2px 0 0 var(--accent);
+	}
+	.cmdk-list :global(.cmdk-hint) {
+		font-family: var(--ff-mono);
+		font-size: 0.75rem;
+		color: var(--faint);
+	}
+	.cmdk-empty {
+		padding: 28px;
+		text-align: center;
+		color: var(--muted);
+	}
+	.cmdk-foot {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+		padding: 12px 18px;
+		border-top: 1px solid var(--border);
+		font-size: 0.78rem;
+		color: var(--faint);
+	}
+	.cmdk-foot > span {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+	}
+</style>

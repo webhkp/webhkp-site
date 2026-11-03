@@ -1,0 +1,83 @@
+---
+import Icon from './Icon.astro';
+import { TESTIMONIALS } from '../data/services';
+---
+
+<div class="testimonials">
+	{
+		TESTIMONIALS.map((t, i) => (
+			<figure class="quote card spot" data-reveal style={`--d:${i}`}>
+				<span class="mark" aria-hidden="true">
+					<Icon name="quote" size={28} stroke={1.25} />
+				</span>
+				<blockquote>“{t.quote}”</blockquote>
+				<figcaption>
+					<span class="avatar" aria-hidden="true">
+						{t.role.split('·')[1]?.trim()[0] ?? 'C'}
+					</span>
+					<span>
+						<strong>{t.name}</strong>
+						<span class="muted">{t.role}</span>
+					</span>
+				</figcaption>
+			</figure>
+		))
+	}
+</div>
+
+<style>
+	.testimonials {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+	}
+	.quote {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		margin: 0;
+		padding: 28px;
+	}
+	.quote:nth-child(2) {
+		transform: translateY(24px);
+	}
+	.mark {
+		color: var(--accent-text);
+	}
+	blockquote {
+		margin: 0;
+		font-family: var(--ff-display);
+		font-size: 1.15rem;
+		line-height: 1.45;
+		letter-spacing: -0.01em;
+	}
+	figcaption {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: auto;
+		font-size: 0.9rem;
+	}
+	figcaption > span:last-child {
+		display: grid;
+	}
+	.avatar {
+		display: grid;
+		place-items: center;
+		width: 42px;
+		height: 42px;
+		border-radius: 12px;
+		background: var(--surface-3);
+		font-family: var(--ff-display);
+		font-weight: 700;
+		color: var(--accent-text);
+	}
+	@media (max-width: 900px) {
+		.testimonials {
+			grid-template-columns: 1fr;
+		}
+		.quote:nth-child(2) {
+			transform: none;
+		}
+	}
+</style>
