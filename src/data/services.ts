@@ -11,12 +11,12 @@ export const SERVICES: Service[] = [
 	{
 		id: 'cloud-architecture',
 		icon: 'cloud',
-		title: 'Cloud Architecture',
+		title: 'Solution & Cloud Architecture',
 		summary:
-			'Secure, cost-aware AWS architectures designed for the next 10× of growth, not just this quarter’s launch.',
+			'End-to-end solution design and secure, cost-aware cloud architectures built for the next 10× of growth, not just this quarter’s launch.',
 		deliverables: [
 			'Architecture review & Well-Architected assessment',
-			'Target-state design with migration roadmap',
+			'Solution blueprint & migration roadmap',
 			'Cost optimization & FinOps guardrails',
 			'Security baseline: IAM, networking, encryption',
 		],
@@ -140,7 +140,7 @@ export const FAQ = [
 	},
 	{
 		q: 'Do you work hands-on or only advise?',
-		a: 'Both. Most engagements mix architecture work with hands-on implementation: writing Terraform, building services and pairing with your engineers.',
+		a: 'Both. I work as a solution architect, but most engagements mix architecture work with hands-on implementation: writing Terraform, building services and pairing with your engineers.',
 	},
 	{
 		q: 'How do you price engagements?',

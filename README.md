@@ -1,6 +1,6 @@
 # WEBHKP
 
-Consulting and portfolio website, built with [Astro](https://astro.build). No UI framework: plain Astro components, scoped CSS and a small amount of vanilla TypeScript.
+Solution architecture, consulting and portfolio website, built with [Astro](https://astro.build). No UI framework: plain Astro components, scoped CSS and a small amount of vanilla TypeScript.
 
 ## Pages
 

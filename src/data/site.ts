@@ -5,9 +5,9 @@
 
 export const SITE = {
 	name: 'WEBHKP',
-	title: 'WEBHKP — Software Consulting & Engineering',
+	title: 'WEBHKP — Solution Architecture & Software Consulting',
 	description:
-		'Independent software consulting: cloud architecture, Kubernetes platforms, backend systems and developer education. Creator of BigBoxCode.',
+		'Solution architect and independent software consultant: cloud architecture, Kubernetes platforms, backend systems and developer education. Creator of BigBoxCode.',
 	email: 'hello@example.com', // TODO: your public contact email
 	location: 'Remote · Worldwide', // TODO
 	responseTime: 'Replies within 1 business day',
@@ -46,6 +46,7 @@ export const NAV = [
 export const HERO_ROTATOR = [
 	'cloud platforms',
 	'backend systems',
+	'AI-powered apps',
 	'K8s platforms',
 	'APIs & services',
 	'data pipelines',

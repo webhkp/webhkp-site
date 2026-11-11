@@ -4,13 +4,13 @@
  */
 
 export const BIO = {
-	headline: 'Engineer, consultant & educator.',
+	headline: 'Solution architect, consultant & educator.',
 	intro:
-		'I’m the engineer behind WEBHKP, an independent consultancy that helps teams design, build and scale software systems that hold up in production.',
+		'I’m a solution architect and the engineer behind WEBHKP, an independent consultancy that helps teams design, build and scale software systems that hold up in production.',
 	paragraphs: [
 		'For more than a decade I’ve worked across the stack: backend services in Java, Go, Node.js and Python; cloud infrastructure on AWS and Google Cloud; and the Kubernetes platforms that tie it all together. I like problems where architecture, performance and developer experience meet.',
 		'Teaching is the other half of what I do. I run the BigBox network of learning sites. BigBoxCode is the flagship, with 238+ tutorials on data structures, algorithms, design patterns and programming languages. BigBoxSystems, BigBoxCognition, BigBoxCipher and BigBoxQuantum cover system design, AI, security and quantum computing. Writing for thousands of developers keeps my explanations sharp, and it’s the same clarity I bring to client work.',
-		'Today I partner with founders, CTOs and engineering teams as a hands-on consultant: reviewing architecture, building platforms, mentoring engineers and leaving every codebase better documented than I found it.',
+		'Today I work as a solution architect: turning business requirements into end-to-end system designs, choosing the right technologies and trade-offs, and guiding teams from blueprint to production. Through WEBHKP I also partner with founders, CTOs and engineering teams as a hands-on consultant: reviewing architecture, building platforms, mentoring engineers and leaving every codebase better documented than I found it.',
 	],
 	currently: [
 		{ label: 'Building', value: 'Tejanto & BigBoxCode Labs' },
@@ -26,8 +26,27 @@ export const PRINCIPLES = [
 	{ icon: 'book', title: 'Leave it documented', text: 'Runbooks, ADRs and diagrams so knowledge outlives the engagement.' },
 ];
 
-/** Tech stack, grouped. `level` 1–3 (3 = deep production experience) drives the strength meter. */
-export const STACK: { group: string; icon: string; items: { name: string; level: 1 | 2 | 3 }[] }[] = [
+/**
+ * Tech stack, grouped. `level` 1–3 (3 = deep production experience) drives the strength meter.
+ * `wide` renders the group as a full-width card above the others.
+ */
+export const STACK: { group: string; icon: string; wide?: boolean; items: { name: string; level: 1 | 2 | 3 }[] }[] = [
+	{
+		group: 'Architecture & Design',
+		icon: 'compass',
+		wide: true,
+		items: [
+			{ name: 'System design', level: 3 },
+			{ name: 'Scalability & performance', level: 3 },
+			{ name: 'Observability', level: 3 },
+			{ name: 'Distributed systems', level: 3 },
+			{ name: 'Microservices', level: 3 },
+			{ name: 'Event-driven architecture', level: 3 },
+			{ name: 'API design (REST, gRPC, GraphQL)', level: 3 },
+			{ name: 'High availability & disaster recovery', level: 2 },
+			{ name: 'Domain-driven design', level: 2 },
+		],
+	},
 	{
 		group: 'Languages',
 		icon: 'code',
@@ -97,15 +116,31 @@ export const STACK: { group: string; icon: string; items: { name: string; level:
 			{ name: 'Nginx', level: 3 },
 		],
 	},
+	{
+		// TODO: adjust levels to match your real experience.
+		group: 'AI & Machine Learning',
+		icon: 'sparkle',
+		items: [
+			{ name: 'LLM APIs (OpenAI, Claude, Gemini)', level: 3 },
+			{ name: 'RAG pipelines', level: 3 },
+			{ name: 'Prompt engineering', level: 3 },
+			{ name: 'AI agents & tool calling (MCP)', level: 2 },
+			{ name: 'LangChain / LlamaIndex', level: 2 },
+			{ name: 'Vector DBs (pgvector, Pinecone)', level: 2 },
+			{ name: 'Amazon Bedrock / SageMaker', level: 2 },
+			{ name: 'Hugging Face', level: 2 },
+			{ name: 'PyTorch', level: 1 },
+		],
+	},
 ];
 
 // DEMO DATA — placeholder career timeline. Replace with your real history.
 export const EXPERIENCE = [
 	{
 		period: '2021 — Now',
-		role: 'Independent Consultant',
+		role: 'Solution Architect & Consultant',
 		org: 'WEBHKP',
-		text: 'Cloud architecture, Kubernetes platforms and backend engineering for startups and product teams worldwide.',
+		text: 'End-to-end solution design, cloud architecture, Kubernetes platforms and backend engineering for startups and product teams worldwide.',
 	},
 	{
 		period: '2019 — Now',

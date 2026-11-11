@@ -13,7 +13,7 @@ const levelLabel = { 1: 'Exploring', 2: 'Proficient', 3: 'Expert' } as const;
 const featuredCerts = CERTIFICATIONS.filter((c) => c.featured);
 ---
 
-<BaseLayout title="About" description="The engineer behind WEBHKP: background, tech stack, principles and where to find me online.">
+<BaseLayout title="About" description="The solution architect behind WEBHKP: background, tech stack, principles and where to find me online.">
 	<PageHero eyebrow="About" title={`${BIO.headline.replace('educator.', "<span class='serif-em'>educator.</span>")}`} lede={BIO.intro}>
 		<div class="hero-socials">
 			{
@@ -39,9 +39,9 @@ const featuredCerts = CERTIFICATIONS.filter((c) => c.featured);
 				</div>
 				<div class="id-monogram" aria-hidden="true">W</div>
 				<dl class="id-rows">
-					<div><dt class="mono">Role</dt><dd>Software consultant</dd></div>
+					<div><dt class="mono">Role</dt><dd>Solution architect · Consultant</dd></div>
 					<div><dt class="mono">Based</dt><dd>{SITE.location}</dd></div>
-					<div><dt class="mono">Focus</dt><dd>Cloud · Platforms · Backend</dd></div>
+					<div><dt class="mono">Focus</dt><dd>Architecture · Cloud · Platforms</dd></div>
 					<div>
 						<dt class="mono">Status</dt>
 						<dd class="status"><span class="pulse"></span> {SITE.availability.label}</dd>
@@ -99,7 +99,7 @@ const featuredCerts = CERTIFICATIONS.filter((c) => c.featured);
 			<div class="stack">
 				{
 					STACK.map((group, gi) => (
-						<div class="stack-group card spot" data-reveal style={`--d:${gi}`}>
+						<div class:list={['stack-group card spot', group.wide && 'is-wide']} data-reveal style={`--d:${gi}`}>
 							<header>
 								<span class="stack-icon">
 									<Icon name={group.icon} size={20} />
@@ -448,6 +448,13 @@ const featuredCerts = CERTIFICATIONS.filter((c) => c.featured);
 	}
 	.stack-group ul {
 		display: grid;
+	}
+	.stack-group.is-wide {
+		grid-column: 1 / -1;
+	}
+	.stack-group.is-wide ul {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+		column-gap: 40px;
 	}
 	.stack-group li {
 		display: flex;
